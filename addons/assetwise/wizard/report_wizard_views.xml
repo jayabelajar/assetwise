@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assetwise_report_wizard_form" model="ir.ui.view">
+        <field name="name">assetwise.report.wizard.form</field>
+        <field name="model">assetwise.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="AssetWise Report">
+                <group>
+                    <field name="report_type"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <group string="Filters">
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="category_id"/>
+                    </group>
+                    <group>
+                        <field name="location"/>
+                        <field name="asset_status"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print" string="Print PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_assetwise_report_inventory_wizard" model="ir.actions.act_window">
+        <field name="name">Inventory Report</field><field name="res_model">assetwise.report.wizard</field><field name="view_mode">form</field><field name="target">new</field><field name="context">{'default_report_type': 'inventory'}</field>
+    </record>
+    <record id="action_assetwise_report_assignment_wizard" model="ir.actions.act_window">
+        <field name="name">Assignment Report</field><field name="res_model">assetwise.report.wizard</field><field name="view_mode">form</field><field name="target">new</field><field name="context">{'default_report_type': 'assignment'}</field>
+    </record>
+    <record id="action_assetwise_report_maintenance_wizard" model="ir.actions.act_window">
+        <field name="name">Maintenance Report</field><field name="res_model">assetwise.report.wizard</field><field name="view_mode">form</field><field name="target">new</field><field name="context">{'default_report_type': 'maintenance'}</field>
+    </record>
+    <record id="action_assetwise_report_depreciation_wizard" model="ir.actions.act_window">
+        <field name="name">Depreciation Summary</field><field name="res_model">assetwise.report.wizard</field><field name="view_mode">form</field><field name="target">new</field><field name="context">{'default_report_type': 'depreciation'}</field>
+    </record>
+</odoo>

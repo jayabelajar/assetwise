@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_assetwise" model="ir.module.category">
+        <field name="name">AssetWise</field>
+        <field name="description">Manage enterprise assets and their lifecycle.</field>
+        <field name="sequence">35</field>
+    </record>
+    <record id="privilege_assetwise" model="res.groups.privilege">
+        <field name="name">AssetWise</field>
+        <field name="sequence">35</field>
+        <field name="category_id" ref="assetwise.module_category_assetwise"/>
+    </record>
+
+    <record id="group_assetwise_viewer" model="res.groups">
+        <field name="name">Viewer</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="assetwise.privilege_assetwise"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can view AssetWise records and reports.</field>
+    </record>
+    <record id="group_assetwise_officer" model="res.groups">
+        <field name="name">Officer</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="assetwise.privilege_assetwise"/>
+        <field name="implied_ids" eval="[(4, ref('assetwise.group_assetwise_viewer'))]"/>
+        <field name="comment">Can manage assets, assignments, returns, and maintenance.</field>
+    </record>
+    <record id="group_assetwise_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="sequence">30</field>
+        <field name="privilege_id" ref="assetwise.privilege_assetwise"/>
+        <field name="implied_ids" eval="[(4, ref('assetwise.group_assetwise_officer'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="comment">Full AssetWise administration access.</field>
+    </record>
+
+    <record id="rule_assetwise_asset_company" model="ir.rule">
+        <field name="name">AssetWise assets by company</field>
+        <field name="model_id" ref="model_assetwise_asset"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_assetwise_category_company" model="ir.rule">
+        <field name="name">AssetWise categories by company</field>
+        <field name="model_id" ref="model_assetwise_category"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_assetwise_assignment_company" model="ir.rule">
+        <field name="name">AssetWise assignments by company</field>
+        <field name="model_id" ref="model_assetwise_assignment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_assetwise_maintenance_company" model="ir.rule">
+        <field name="name">AssetWise maintenance by company</field>
+        <field name="model_id" ref="model_assetwise_maintenance"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

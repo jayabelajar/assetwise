@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_assetwise_root" name="AssetWise" sequence="35" groups="assetwise.group_assetwise_viewer"/>
+    <menuitem id="menu_assetwise_dashboard" name="Dashboard" parent="menu_assetwise_root" action="action_assetwise_dashboard" sequence="10"/>
+    <menuitem id="menu_assetwise_assets_root" name="Assets" parent="menu_assetwise_root" sequence="20"/>
+    <menuitem id="menu_assetwise_assets" name="All Assets" parent="menu_assetwise_assets_root" action="action_assetwise_asset" sequence="10"/>
+    <menuitem id="menu_assetwise_categories" name="Categories" parent="menu_assetwise_assets_root" action="action_assetwise_category" sequence="20" groups="assetwise.group_assetwise_admin"/>
+    <menuitem id="menu_assetwise_operations" name="Operations" parent="menu_assetwise_root" sequence="30"/>
+    <menuitem id="menu_assetwise_assignments" name="Assignments" parent="menu_assetwise_operations" action="action_assetwise_assignment" sequence="10"/>
+    <menuitem id="menu_assetwise_maintenance" name="Maintenance" parent="menu_assetwise_operations" action="action_assetwise_maintenance" sequence="20"/>
+    <menuitem id="menu_assetwise_reports" name="Reports" parent="menu_assetwise_root" sequence="40"/>
+    <menuitem id="menu_assetwise_inventory_report" name="Inventory Report" parent="menu_assetwise_reports" action="action_assetwise_report_inventory_wizard" sequence="10"/>
+    <menuitem id="menu_assetwise_assignment_report" name="Assignment Report" parent="menu_assetwise_reports" action="action_assetwise_report_assignment_wizard" sequence="20"/>
+    <menuitem id="menu_assetwise_maintenance_report" name="Maintenance Report" parent="menu_assetwise_reports" action="action_assetwise_report_maintenance_wizard" sequence="30"/>
+    <menuitem id="menu_assetwise_depreciation_report" name="Depreciation Summary" parent="menu_assetwise_reports" action="action_assetwise_report_depreciation_wizard" sequence="40"/>
+    <menuitem id="menu_assetwise_analytics" name="Analytics" parent="menu_assetwise_reports" sequence="50"/>
+    <menuitem id="menu_assetwise_category_analysis" name="Assets by Category" parent="menu_assetwise_analytics" action="action_assetwise_assets_by_category" sequence="10"/>
+    <menuitem id="menu_assetwise_condition_analysis" name="Assets by Condition" parent="menu_assetwise_analytics" action="action_assetwise_assets_by_condition" sequence="20"/>
+</odoo>

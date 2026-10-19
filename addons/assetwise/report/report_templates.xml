@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_header">
+        <div class="row mb-3">
+            <div class="col-8">
+                <h2 class="mb-1"><t t-out="title"/></h2>
+                <strong t-out="company.name"/>
+                <div t-if="company.street"><span t-field="company.partner_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True}"/></div>
+            </div>
+            <div class="col-4 text-end small">
+                <div><strong>Reference:</strong> <span t-out="report_reference"/></div>
+                <div><strong>Generated:</strong> <span t-out="generated_on.strftime('%Y-%m-%d %H:%M')"/></div>
+                <div t-if="data.get('date_from') or data.get('date_to')"><strong>Period:</strong> <span t-out="data.get('date_from') or 'Beginning'"/> – <span t-out="data.get('date_to') or 'Present'"/></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_inventory">
+        <t t-call="web.html_container"><t t-call="web.external_layout"><div class="page">
+            <t t-set="title">Asset Inventory Report</t><t t-call="assetwise.report_header"/>
+            <table class="table table-sm table-bordered">
+                <thead><tr><th>Code</th><th>Asset</th><th>Category</th><th>Location</th><th>Condition</th><th>Status</th><th class="text-end">Acquisition Cost</th></tr></thead>
+                <tbody>
+                    <tr t-foreach="docs" t-as="o"><td><span t-field="o.code"/></td><td><span t-field="o.name"/></td><td><span t-field="o.category_id"/></td><td><span t-field="o.location"/></td><td><span t-field="o.condition"/></td><td><span t-field="o.status"/></td><td class="text-end"><span t-field="o.purchase_value"/></td></tr>
+                    <tr t-if="not docs"><td colspan="7" class="text-center text-muted">No records match the selected filters.</td></tr>
+                </tbody>
+                <tfoot t-if="docs"><tr><th colspan="6" class="text-end">Total</th><th class="text-end"><span t-out="sum(docs.mapped('purchase_value'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/></th></tr></tfoot>
+            </table>
+        </div></t></t>
+    </template>
+
+    <template id="report_assignment">
+        <t t-call="web.html_container"><t t-call="web.external_layout"><div class="page">
+            <t t-set="title">Asset Assignment History</t><t t-call="assetwise.report_header"/>
+            <table class="table table-sm table-bordered">
+                <thead><tr><th>Reference</th><th>Asset</th><th>Assigned To</th><th>Assigned</th><th>Expected Return</th><th>Actual Return</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr t-foreach="docs" t-as="o"><td><span t-field="o.reference"/></td><td><span t-field="o.asset_id"/></td><td><span t-field="o.assigned_to_id"/></td><td><span t-field="o.assignment_date"/></td><td><span t-field="o.expected_return_date"/></td><td><span t-field="o.actual_return_date"/></td><td><span t-field="o.state"/></td></tr>
+                    <tr t-if="not docs"><td colspan="7" class="text-center text-muted">No records match the selected filters.</td></tr>
+                </tbody>
+            </table>
+        </div></t></t>
+    </template>
+
+    <template id="report_maintenance">
+        <t t-call="web.html_container"><t t-call="web.external_layout"><div class="page">
+            <t t-set="title">Asset Maintenance History</t><t t-call="assetwise.report_header"/>
+            <table class="table table-sm table-bordered">
+                <thead><tr><th>Reference</th><th>Asset</th><th>Type</th><th>Scheduled</th><th>Completed</th><th>Technician</th><th>Status</th><th class="text-end">Cost</th></tr></thead>
+                <tbody>
+                    <tr t-foreach="docs" t-as="o"><td><span t-field="o.reference"/></td><td><span t-field="o.asset_id"/></td><td><span t-field="o.maintenance_type"/></td><td><span t-field="o.scheduled_date"/></td><td><span t-field="o.completion_date"/></td><td><span t-field="o.assigned_technician_id"/></td><td><span t-field="o.state"/></td><td class="text-end"><span t-field="o.maintenance_cost"/></td></tr>
+                    <tr t-if="not docs"><td colspan="8" class="text-center text-muted">No records match the selected filters.</td></tr>
+                </tbody>
+                <tfoot t-if="docs"><tr><th colspan="7" class="text-end">Total</th><th class="text-end"><span t-out="sum(docs.mapped('maintenance_cost'))" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/></th></tr></tfoot>
+            </table>
+        </div></t></t>
+    </template>
+
+    <template id="report_depreciation">
+        <t t-call="web.html_container"><t t-call="web.external_layout"><div class="page">
+            <t t-set="title">Asset Depreciation Summary</t><t t-call="assetwise.report_header"/>
+            <div class="alert alert-info small">Managerial straight-line estimates only. No accounting journal entries are created.</div>
+            <table class="table table-sm table-bordered">
+                <thead><tr><th>Code</th><th>Asset</th><th>Start Date</th><th>Life</th><th class="text-end">Cost</th><th class="text-end">Residual</th><th class="text-end">Accumulated</th><th class="text-end">Book Value</th></tr></thead>
+                <tbody>
+                    <tr t-foreach="docs" t-as="o"><td><span t-field="o.code"/></td><td><span t-field="o.name"/></td><td><span t-field="o.depreciation_start_date"/></td><td><span t-field="o.useful_life_years"/> years</td><td class="text-end"><span t-field="o.purchase_value"/></td><td class="text-end"><span t-field="o.residual_value"/></td><td class="text-end"><span t-field="o.accumulated_depreciation"/></td><td class="text-end"><span t-field="o.estimated_book_value"/></td></tr>
+                    <tr t-if="not docs"><td colspan="8" class="text-center text-muted">No records match the selected filters.</td></tr>
+                </tbody>
+            </table>
+        </div></t></t>
+    </template>
+</odoo>

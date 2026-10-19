@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assetwise_category_list" model="ir.ui.view">
+        <field name="name">assetwise.category.list</field>
+        <field name="model">assetwise.category</field>
+        <field name="arch" type="xml">
+            <list string="Asset Categories">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="description" optional="show"/>
+                <field name="asset_count"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_assetwise_category_form" model="ir.ui.view">
+        <field name="name">assetwise.category.form</field>
+        <field name="model">assetwise.category</field>
+        <field name="arch" type="xml">
+            <form string="Asset Category">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(action_assetwise_asset)d" class="oe_stat_button" icon="fa-cubes" context="{'search_default_category_id': id}">
+                            <field name="asset_count" widget="statinfo" string="Assets"/>
+                        </button>
+                    </div>
+                    <div class="oe_title"><h1><field name="name" placeholder="e.g. IT Equipment"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group><field name="active"/></group>
+                    </group>
+                    <field name="description" placeholder="Category description..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_assetwise_category_search" model="ir.ui.view">
+        <field name="name">assetwise.category.search</field>
+        <field name="model">assetwise.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Categories">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_assetwise_category" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">assetwise.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_assetwise_category_search"/>
+        <field name="context">{'active_test': True}</field>
+    </record>
+</odoo>

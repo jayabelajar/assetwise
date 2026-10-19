@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="sequence_asset" model="ir.sequence">
+        <field name="name">AssetWise Asset</field>
+        <field name="code">assetwise.asset</field>
+        <field name="prefix">AST/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="sequence_assignment" model="ir.sequence">
+        <field name="name">AssetWise Assignment</field>
+        <field name="code">assetwise.assignment</field>
+        <field name="prefix">ASN/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="sequence_maintenance" model="ir.sequence">
+        <field name="name">AssetWise Maintenance</field>
+        <field name="code">assetwise.maintenance</field>
+        <field name="prefix">MNT/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

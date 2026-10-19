@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assetwise_maintenance_list" model="ir.ui.view">
+        <field name="name">assetwise.maintenance.list</field>
+        <field name="model">assetwise.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Asset Maintenance" decoration-warning="state in ('scheduled', 'in_progress')" decoration-success="state == 'completed'" decoration-muted="state == 'cancelled'">
+                <field name="reference"/>
+                <field name="asset_id"/>
+                <field name="maintenance_type" widget="badge"/>
+                <field name="scheduled_date"/>
+                <field name="start_date" optional="show"/>
+                <field name="completion_date" optional="show"/>
+                <field name="assigned_technician_id" widget="many2one_avatar_user"/>
+                <field name="maintenance_cost" sum="Total Maintenance Cost"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_assetwise_maintenance_form" model="ir.ui.view">
+        <field name="name">assetwise.maintenance.form</field>
+        <field name="model">assetwise.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Asset Maintenance">
+                <header>
+                    <button name="action_schedule" string="Schedule" type="object" class="btn-primary" invisible="state != 'draft'" groups="assetwise.group_assetwise_officer"/>
+                    <button name="action_start" string="Start Work" type="object" class="btn-primary" invisible="state != 'scheduled'" groups="assetwise.group_assetwise_officer"/>
+                    <button name="action_complete" string="Complete" type="object" class="btn-primary" invisible="state != 'in_progress'" groups="assetwise.group_assetwise_officer" confirm="Complete this maintenance job?"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'scheduled')" groups="assetwise.group_assetwise_officer"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,in_progress,completed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Work Order">
+                            <field name="asset_id" domain="[('status', '!=', 'disposed')]" readonly="state != 'draft'"/>
+                            <field name="maintenance_type" readonly="state != 'draft'"/>
+                            <field name="assigned_technician_id" widget="many2one_avatar_user" readonly="state in ('completed', 'cancelled')"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Schedule and Cost">
+                            <field name="scheduled_date" readonly="state != 'draft'"/>
+                            <field name="start_date"/>
+                            <field name="completion_date"/>
+                            <field name="maintenance_cost" readonly="state in ('completed', 'cancelled')"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description"><field name="description" readonly="state in ('completed', 'cancelled')"/></page>
+                        <page string="Notes"><field name="notes" readonly="state in ('completed', 'cancelled')"/></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_assetwise_maintenance_search" model="ir.ui.view">
+        <field name="name">assetwise.maintenance.search</field>
+        <field name="model">assetwise.maintenance</field>
+        <field name="arch" type="xml">
+            <search string="Search Maintenance">
+                <field name="reference"/>
+                <field name="asset_id"/>
+                <field name="assigned_technician_id"/>
+                <filter name="upcoming" string="Upcoming" domain="[('state', '=', 'scheduled'), ('scheduled_date', '&gt;=', context_today())]"/>
+                <filter name="active" string="Active" domain="[('state', 'in', ('scheduled', 'in_progress'))]"/>
+                <filter name="completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+                <group>
+                    <filter name="asset" string="Asset" context="{'group_by': 'asset_id'}"/>
+                    <filter name="type" string="Type" context="{'group_by': 'maintenance_type'}"/>
+                    <filter name="state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="month" string="Scheduled Month" context="{'group_by': 'scheduled_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_assetwise_maintenance_pivot" model="ir.ui.view">
+        <field name="name">assetwise.maintenance.pivot</field>
+        <field name="model">assetwise.maintenance</field>
+        <field name="arch" type="xml">
+            <pivot string="Maintenance Analysis" sample="1">
+                <field name="maintenance_type" type="row"/>
+                <field name="state" type="col"/>
+                <field name="maintenance_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="view_assetwise_maintenance_graph" model="ir.ui.view">
+        <field name="name">assetwise.maintenance.graph</field>
+        <field name="model">assetwise.maintenance</field>
+        <field name="arch" type="xml">
+            <graph string="Maintenance Costs" type="bar" sample="1">
+                <field name="scheduled_date" interval="month"/>
+                <field name="maintenance_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_assetwise_maintenance" model="ir.actions.act_window">
+        <field name="name">Maintenance</field>
+        <field name="res_model">assetwise.maintenance</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_assetwise_maintenance_search"/>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Schedule asset maintenance</p><p>Track preventive and corrective work from scheduling through completion.</p></field>
+    </record>
+</odoo>

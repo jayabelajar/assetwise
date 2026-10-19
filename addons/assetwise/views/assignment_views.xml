@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assetwise_assignment_list" model="ir.ui.view">
+        <field name="name">assetwise.assignment.list</field>
+        <field name="model">assetwise.assignment</field>
+        <field name="arch" type="xml">
+            <list string="Asset Assignments" decoration-info="state == 'assigned'" decoration-success="state == 'returned'" decoration-muted="state == 'cancelled'">
+                <field name="reference"/>
+                <field name="asset_id"/>
+                <field name="assigned_to_id" widget="many2one_avatar_user"/>
+                <field name="assigned_by_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="assignment_date"/>
+                <field name="expected_return_date"/>
+                <field name="actual_return_date" optional="show"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_assetwise_assignment_form" model="ir.ui.view">
+        <field name="name">assetwise.assignment.form</field>
+        <field name="model">assetwise.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Asset Assignment">
+                <header>
+                    <button name="action_assign" string="Assign" type="object" class="btn-primary" invisible="state != 'draft'" groups="assetwise.group_assetwise_officer"/>
+                    <button name="action_open_return_wizard" string="Return Asset" type="object" class="btn-primary" invisible="state != 'assigned'" groups="assetwise.group_assetwise_officer"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state != 'draft'" groups="assetwise.group_assetwise_officer"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,returned,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Assignment">
+                            <field name="asset_id" domain="[('status', '=', 'available')]" readonly="state != 'draft'"/>
+                            <field name="assigned_to_id" widget="many2one_avatar_user" readonly="state != 'draft'"/>
+                            <field name="assigned_by_id" widget="many2one_avatar_user"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="assignment_date" readonly="state != 'draft'"/>
+                            <field name="expected_return_date" readonly="state != 'draft'"/>
+                            <field name="actual_return_date" invisible="state not in ('returned',)"/>
+                            <field name="received_by_id" widget="many2one_avatar_user" invisible="state not in ('returned',)"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes"><field name="notes" readonly="state != 'draft'"/></page>
+                        <page string="Return Details" invisible="state != 'returned'">
+                            <group>
+                                <field name="return_condition"/>
+                                <field name="return_notes"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_assetwise_assignment_search" model="ir.ui.view">
+        <field name="name">assetwise.assignment.search</field>
+        <field name="model">assetwise.assignment</field>
+        <field name="arch" type="xml">
+            <search string="Search Assignments">
+                <field name="reference"/>
+                <field name="asset_id"/>
+                <field name="assigned_to_id"/>
+                <filter name="active" string="Active" domain="[('state', '=', 'assigned')]"/>
+                <filter name="overdue" string="Overdue" domain="[('state', '=', 'assigned'), ('expected_return_date', '&lt;', context_today())]"/>
+                <filter name="returned" string="Returned" domain="[('state', '=', 'returned')]"/>
+                <group>
+                    <filter name="asset" string="Asset" context="{'group_by': 'asset_id'}"/>
+                    <filter name="assignee" string="Assigned To" context="{'group_by': 'assigned_to_id'}"/>
+                    <filter name="state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="month" string="Assignment Month" context="{'group_by': 'assignment_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_assetwise_assignment_pivot" model="ir.ui.view">
+        <field name="name">assetwise.assignment.pivot</field>
+        <field name="model">assetwise.assignment</field>
+        <field name="arch" type="xml">
+            <pivot string="Assignment Analysis" sample="1">
+                <field name="assigned_to_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="assignment_date" interval="month" type="row"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="view_assetwise_assignment_graph" model="ir.ui.view">
+        <field name="name">assetwise.assignment.graph</field>
+        <field name="model">assetwise.assignment</field>
+        <field name="arch" type="xml">
+            <graph string="Assignments by User" type="bar" sample="1">
+                <field name="assigned_to_id"/>
+                <field name="id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_assetwise_assignment" model="ir.actions.act_window">
+        <field name="name">Assignments</field>
+        <field name="res_model">assetwise.assignment</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_assetwise_assignment_search"/>
+        <field name="help" type="html"><p class="o_view_nocontent_smiling_face">Create an asset assignment</p><p>Assignments remain in draft until confirmed with the Assign action.</p></field>
+    </record>
+</odoo>

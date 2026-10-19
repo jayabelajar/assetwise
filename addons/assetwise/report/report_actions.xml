@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_inventory" model="ir.actions.report">
+        <field name="name">Asset Inventory Report</field>
+        <field name="model">assetwise.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">assetwise.report_inventory</field>
+        <field name="report_file">assetwise.report_inventory</field>
+        <field name="print_report_name">'Asset Inventory - %s' % (object.company_id.name)</field>
+    </record>
+    <record id="action_report_assignment" model="ir.actions.report">
+        <field name="name">Assignment History Report</field>
+        <field name="model">assetwise.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">assetwise.report_assignment</field>
+        <field name="report_file">assetwise.report_assignment</field>
+        <field name="print_report_name">'Assignment History - %s' % (object.company_id.name)</field>
+    </record>
+    <record id="action_report_maintenance" model="ir.actions.report">
+        <field name="name">Maintenance History Report</field>
+        <field name="model">assetwise.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">assetwise.report_maintenance</field>
+        <field name="report_file">assetwise.report_maintenance</field>
+        <field name="print_report_name">'Maintenance History - %s' % (object.company_id.name)</field>
+    </record>
+    <record id="action_report_depreciation" model="ir.actions.report">
+        <field name="name">Asset Depreciation Summary</field>
+        <field name="model">assetwise.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">assetwise.report_depreciation</field>
+        <field name="report_file">assetwise.report_depreciation</field>
+        <field name="print_report_name">'Depreciation Summary - %s' % (object.company_id.name)</field>
+    </record>
+</odoo>

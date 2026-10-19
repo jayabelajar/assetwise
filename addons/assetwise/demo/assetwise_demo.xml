@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="category_it" model="assetwise.category">
+        <field name="name">IT Equipment</field><field name="code">IT</field><field name="description">Computers, networking equipment, and peripherals.</field>
+    </record>
+    <record id="category_furniture" model="assetwise.category">
+        <field name="name">Office Furniture</field><field name="code">FUR</field><field name="description">Desks, chairs, cabinets, and meeting room furniture.</field>
+    </record>
+    <record id="category_electronics" model="assetwise.category">
+        <field name="name">Electronics</field><field name="code">ELC</field><field name="description">General electronic equipment.</field>
+    </record>
+    <record id="asset_laptop" model="assetwise.asset">
+        <field name="name">Engineering Laptop</field><field name="category_id" ref="category_it"/><field name="serial_number">DEMO-LAP-001</field><field name="location">Jakarta HQ</field><field name="condition">excellent</field><field name="purchase_date" eval="time.strftime('%Y-01-15')"/><field name="depreciation_start_date" eval="time.strftime('%Y-01-15')"/><field name="purchase_value">25000000</field><field name="residual_value">2500000</field><field name="useful_life_years">4</field>
+    </record>
+    <record id="asset_projector" model="assetwise.asset">
+        <field name="name">Meeting Room Projector</field><field name="category_id" ref="category_electronics"/><field name="serial_number">DEMO-PRJ-001</field><field name="location">Meeting Room A</field><field name="condition">good</field><field name="purchase_value">12000000</field><field name="residual_value">1000000</field><field name="useful_life_years">5</field>
+    </record>
+    <record id="asset_chair" model="assetwise.asset">
+        <field name="name">Ergonomic Office Chair</field><field name="category_id" ref="category_furniture"/><field name="serial_number">DEMO-CHR-001</field><field name="location">Jakarta HQ</field><field name="condition">good</field><field name="purchase_value">4500000</field><field name="residual_value">500000</field><field name="useful_life_years">5</field>
+    </record>
+    <record id="maintenance_projector" model="assetwise.maintenance">
+        <field name="asset_id" ref="asset_projector"/><field name="maintenance_type">preventive</field><field name="description">Quarterly lens cleaning and lamp inspection.</field><field name="scheduled_date" eval="(datetime.date.today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d')"/>
+    </record>
+</odoo>

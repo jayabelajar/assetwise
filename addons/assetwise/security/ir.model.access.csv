@@ -1,0 +1,14 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_asset_viewer,assetwise.asset viewer,model_assetwise_asset,assetwise.group_assetwise_viewer,1,0,0,0
+access_asset_officer,assetwise.asset officer,model_assetwise_asset,assetwise.group_assetwise_officer,1,1,1,0
+access_asset_admin,assetwise.asset admin,model_assetwise_asset,assetwise.group_assetwise_admin,1,1,1,0
+access_category_viewer,assetwise.category viewer,model_assetwise_category,assetwise.group_assetwise_viewer,1,0,0,0
+access_category_admin,assetwise.category admin,model_assetwise_category,assetwise.group_assetwise_admin,1,1,1,1
+access_assignment_viewer,assetwise.assignment viewer,model_assetwise_assignment,assetwise.group_assetwise_viewer,1,0,0,0
+access_assignment_officer,assetwise.assignment officer,model_assetwise_assignment,assetwise.group_assetwise_officer,1,1,1,0
+access_assignment_admin,assetwise.assignment admin,model_assetwise_assignment,assetwise.group_assetwise_admin,1,1,1,1
+access_maintenance_viewer,assetwise.maintenance viewer,model_assetwise_maintenance,assetwise.group_assetwise_viewer,1,0,0,0
+access_maintenance_officer,assetwise.maintenance officer,model_assetwise_maintenance,assetwise.group_assetwise_officer,1,1,1,0
+access_maintenance_admin,assetwise.maintenance admin,model_assetwise_maintenance,assetwise.group_assetwise_admin,1,1,1,1
+access_report_wizard_viewer,assetwise.report.wizard viewer,model_assetwise_report_wizard,assetwise.group_assetwise_viewer,1,1,1,1
+access_return_wizard_officer,assetwise.return.wizard officer,model_assetwise_return_wizard,assetwise.group_assetwise_officer,1,1,1,1
