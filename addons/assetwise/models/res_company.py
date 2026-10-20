@@ -13,6 +13,50 @@ class ResCompany(models.Model):
     assetwise_maintenance_cost = fields.Monetary(compute="_compute_assetwise_metrics")
     assetwise_upcoming_maintenance = fields.Integer(compute="_compute_assetwise_metrics")
 
+    def _assetwise_open_action(self, xml_id, domain=None):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id(xml_id)
+        action["domain"] = [("company_id", "=", self.id)] + (domain or [])
+        return action
+
+    def action_assetwise_open_all_assets(self):
+        return self._assetwise_open_action("assetwise.action_assetwise_asset")
+
+    def action_assetwise_open_available_assets(self):
+        return self._assetwise_open_action(
+            "assetwise.action_assetwise_asset", [("status", "=", "available")]
+        )
+
+    def action_assetwise_open_assigned_assets(self):
+        return self._assetwise_open_action(
+            "assetwise.action_assetwise_asset", [("status", "=", "assigned")]
+        )
+
+    def action_assetwise_open_maintenance_assets(self):
+        return self._assetwise_open_action(
+            "assetwise.action_assetwise_asset", [("status", "=", "maintenance")]
+        )
+
+    def action_assetwise_open_disposed_assets(self):
+        return self._assetwise_open_action(
+            "assetwise.action_assetwise_asset", [("status", "=", "disposed")]
+        )
+
+    def action_assetwise_open_assignments(self):
+        return self._assetwise_open_action("assetwise.action_assetwise_assignment")
+
+    def action_assetwise_open_maintenance(self):
+        return self._assetwise_open_action("assetwise.action_assetwise_maintenance")
+
+    def action_assetwise_open_upcoming_maintenance(self):
+        return self._assetwise_open_action(
+            "assetwise.action_assetwise_maintenance",
+            [
+                ("state", "=", "scheduled"),
+                ("scheduled_date", ">=", fields.Date.context_today(self)),
+            ],
+        )
+
     def _compute_assetwise_metrics(self):
         Asset = self.env["assetwise.asset"].with_context(active_test=False)
         Maintenance = self.env["assetwise.maintenance"]

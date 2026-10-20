@@ -1,24 +1,338 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Reference categories -->
     <record id="category_it" model="assetwise.category">
-        <field name="name">IT Equipment</field><field name="code">IT</field><field name="description">Computers, networking equipment, and peripherals.</field>
+        <field name="name">IT Equipment</field>
+        <field name="code">IT</field>
+        <field name="description">Computers, servers, networking equipment, and user peripherals.</field>
+        <field name="company_id" ref="base.main_company"/>
     </record>
     <record id="category_furniture" model="assetwise.category">
-        <field name="name">Office Furniture</field><field name="code">FUR</field><field name="description">Desks, chairs, cabinets, and meeting room furniture.</field>
+        <field name="name">Office Furniture</field>
+        <field name="code">FUR</field>
+        <field name="description">Desks, chairs, cabinets, and collaborative workspace furniture.</field>
+        <field name="company_id" ref="base.main_company"/>
     </record>
     <record id="category_electronics" model="assetwise.category">
-        <field name="name">Electronics</field><field name="code">ELC</field><field name="description">General electronic equipment.</field>
+        <field name="name">Audio Visual</field>
+        <field name="code">AV</field>
+        <field name="description">Presentation, photography, video, and meeting room equipment.</field>
+        <field name="company_id" ref="base.main_company"/>
     </record>
+    <record id="category_facilities" model="assetwise.category">
+        <field name="name">Facilities Equipment</field>
+        <field name="code">FAC</field>
+        <field name="description">Building systems and shared operational equipment.</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="category_mobile" model="assetwise.category">
+        <field name="name">Mobile Devices</field>
+        <field name="code">MOB</field>
+        <field name="description">Company phones, tablets, and mobile connectivity devices.</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- Sample suppliers -->
+    <record id="vendor_nusantara_tech" model="res.partner">
+        <field name="name">PT Nusantara Teknologi</field>
+        <field name="company_type">company</field>
+        <field name="email">sales@nusantaratech.example.com</field>
+        <field name="phone">+62 21 555 0101</field>
+        <field name="city">Jakarta</field>
+    </record>
+    <record id="vendor_ruang_kerja" model="res.partner">
+        <field name="name">CV Ruang Kerja Indonesia</field>
+        <field name="company_type">company</field>
+        <field name="email">hello@ruangkerja.example.com</field>
+        <field name="phone">+62 21 555 0130</field>
+        <field name="city">Tangerang</field>
+    </record>
+    <record id="vendor_sarana_prima" model="res.partner">
+        <field name="name">PT Sarana Prima Teknik</field>
+        <field name="company_type">company</field>
+        <field name="email">service@saranaprima.example.com</field>
+        <field name="phone">+62 21 555 0175</field>
+        <field name="city">Bekasi</field>
+    </record>
+
+    <!-- Asset portfolio -->
     <record id="asset_laptop" model="assetwise.asset">
-        <field name="name">Engineering Laptop</field><field name="category_id" ref="category_it"/><field name="serial_number">DEMO-LAP-001</field><field name="location">Jakarta HQ</field><field name="condition">excellent</field><field name="purchase_date" eval="time.strftime('%Y-01-15')"/><field name="depreciation_start_date" eval="time.strftime('%Y-01-15')"/><field name="purchase_value">25000000</field><field name="residual_value">2500000</field><field name="useful_life_years">4</field>
+        <field name="name">MacBook Pro 14 - Engineering</field>
+        <field name="category_id" ref="category_it"/>
+        <field name="serial_number">C02-DEMO-MBP-01</field>
+        <field name="location">Jakarta HQ - Engineering</field>
+        <field name="condition">excellent</field>
+        <field name="status">assigned</field>
+        <field name="responsible_user_id" ref="base.user_admin"/>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=420)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=420)).strftime('%Y-%m-%d')"/>
+        <field name="warranty_expiration" eval="(datetime.today() + timedelta(days=310)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">32500000</field>
+        <field name="residual_value">4000000</field>
+        <field name="useful_life_years">4</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="description" type="html"><p>Primary development workstation with 16 GB memory and 512 GB storage.</p></field>
+    </record>
+    <record id="asset_thinkpad" model="assetwise.asset">
+        <field name="name">ThinkPad X1 Carbon - Finance</field>
+        <field name="category_id" ref="category_it"/>
+        <field name="serial_number">PF-DEMO-X1-022</field>
+        <field name="location">Jakarta HQ - Finance</field>
+        <field name="condition">good</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=790)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=790)).strftime('%Y-%m-%d')"/>
+        <field name="warranty_expiration" eval="(datetime.today() + timedelta(days=120)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">24500000</field>
+        <field name="residual_value">2500000</field>
+        <field name="useful_life_years">4</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_nas" model="assetwise.asset">
+        <field name="name">Synology NAS - Document Archive</field>
+        <field name="category_id" ref="category_it"/>
+        <field name="serial_number">NAS-DEMO-920-01</field>
+        <field name="location">Jakarta HQ - Server Room</field>
+        <field name="condition">good</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=980)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=980)).strftime('%Y-%m-%d')"/>
+        <field name="warranty_expiration" eval="(datetime.today() - timedelta(days=250)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">18500000</field>
+        <field name="residual_value">1500000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_access_point" model="assetwise.asset">
+        <field name="name">Wi-Fi 6 Access Point</field>
+        <field name="category_id" ref="category_it"/>
+        <field name="serial_number">UAP6-DEMO-004</field>
+        <field name="location">Jakarta HQ - Floor 2</field>
+        <field name="condition">excellent</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=180)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=180)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">4200000</field>
+        <field name="residual_value">300000</field>
+        <field name="useful_life_years">4</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
     </record>
     <record id="asset_projector" model="assetwise.asset">
-        <field name="name">Meeting Room Projector</field><field name="category_id" ref="category_electronics"/><field name="serial_number">DEMO-PRJ-001</field><field name="location">Meeting Room A</field><field name="condition">good</field><field name="purchase_value">12000000</field><field name="residual_value">1000000</field><field name="useful_life_years">5</field>
+        <field name="name">Epson Meeting Room Projector</field>
+        <field name="category_id" ref="category_electronics"/>
+        <field name="serial_number">PRJ-DEMO-EB2250</field>
+        <field name="location">Jakarta HQ - Merapi Room</field>
+        <field name="condition">fair</field>
+        <field name="status">maintenance</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=1320)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=1320)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">16800000</field>
+        <field name="residual_value">1000000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_camera" model="assetwise.asset">
+        <field name="name">Sony Mirrorless Camera</field>
+        <field name="category_id" ref="category_electronics"/>
+        <field name="serial_number">CAM-DEMO-A6400</field>
+        <field name="location">Jakarta HQ - Marketing</field>
+        <field name="condition">good</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=640)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=640)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">14200000</field>
+        <field name="residual_value">1800000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
     </record>
     <record id="asset_chair" model="assetwise.asset">
-        <field name="name">Ergonomic Office Chair</field><field name="category_id" ref="category_furniture"/><field name="serial_number">DEMO-CHR-001</field><field name="location">Jakarta HQ</field><field name="condition">good</field><field name="purchase_value">4500000</field><field name="residual_value">500000</field><field name="useful_life_years">5</field>
+        <field name="name">Ergonomic Chair - Executive</field>
+        <field name="category_id" ref="category_furniture"/>
+        <field name="serial_number">CHR-DEMO-ERG-018</field>
+        <field name="location">Jakarta HQ - Executive Area</field>
+        <field name="condition">good</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=510)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=510)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">5750000</field>
+        <field name="residual_value">500000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_ruang_kerja"/>
+        <field name="company_id" ref="base.main_company"/>
     </record>
+    <record id="asset_standing_desk" model="assetwise.asset">
+        <field name="name">Electric Standing Desk</field>
+        <field name="category_id" ref="category_furniture"/>
+        <field name="serial_number">DSK-DEMO-ELC-007</field>
+        <field name="location">Jakarta HQ - Product Team</field>
+        <field name="condition">excellent</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=240)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=240)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">7800000</field>
+        <field name="residual_value">700000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_ruang_kerja"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_hvac" model="assetwise.asset">
+        <field name="name">Server Room Air Conditioner</field>
+        <field name="category_id" ref="category_facilities"/>
+        <field name="serial_number">HVAC-DEMO-SR-02</field>
+        <field name="location">Jakarta HQ - Server Room</field>
+        <field name="condition">fair</field>
+        <field name="status">maintenance</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=1650)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=1650)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">28000000</field>
+        <field name="residual_value">2000000</field>
+        <field name="useful_life_years">8</field>
+        <field name="vendor_id" ref="vendor_sarana_prima"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_printer" model="assetwise.asset">
+        <field name="name">Legacy Multifunction Printer</field>
+        <field name="category_id" ref="category_it"/>
+        <field name="serial_number">PRN-DEMO-OLD-03</field>
+        <field name="location">Jakarta HQ - Storage</field>
+        <field name="condition">damaged</field>
+        <field name="status">disposed</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=2550)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=2550)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">9800000</field>
+        <field name="residual_value">500000</field>
+        <field name="useful_life_years">5</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="notes">Retained for disposal audit. Replacement parts are no longer available.</field>
+    </record>
+    <record id="asset_phone" model="assetwise.asset">
+        <field name="name">Samsung Galaxy S24 - Sales</field>
+        <field name="category_id" ref="category_mobile"/>
+        <field name="serial_number">MOB-DEMO-S24-09</field>
+        <field name="location">Jakarta HQ - Sales</field>
+        <field name="condition">excellent</field>
+        <field name="status">assigned</field>
+        <field name="responsible_user_id" ref="base.user_admin"/>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=95)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=95)).strftime('%Y-%m-%d')"/>
+        <field name="warranty_expiration" eval="(datetime.today() + timedelta(days=635)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">13999000</field>
+        <field name="residual_value">2000000</field>
+        <field name="useful_life_years">3</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    <record id="asset_tablet" model="assetwise.asset">
+        <field name="name">iPad Air - Field Operations</field>
+        <field name="category_id" ref="category_mobile"/>
+        <field name="serial_number">TAB-DEMO-AIR-05</field>
+        <field name="location">Jakarta HQ - Operations</field>
+        <field name="condition">good</field>
+        <field name="purchase_date" eval="(datetime.today() - timedelta(days=360)).strftime('%Y-%m-%d')"/>
+        <field name="depreciation_start_date" eval="(datetime.today() - timedelta(days=360)).strftime('%Y-%m-%d')"/>
+        <field name="purchase_value">11999000</field>
+        <field name="residual_value">1500000</field>
+        <field name="useful_life_years">3</field>
+        <field name="vendor_id" ref="vendor_nusantara_tech"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- Assignment history -->
+    <record id="assignment_laptop_active" model="assetwise.assignment">
+        <field name="asset_id" ref="asset_laptop"/>
+        <field name="assigned_to_id" ref="base.user_admin"/>
+        <field name="assigned_by_id" ref="base.user_admin"/>
+        <field name="assignment_date" eval="(datetime.today() - timedelta(days=45)).strftime('%Y-%m-%d')"/>
+        <field name="expected_return_date" eval="(datetime.today() + timedelta(days=320)).strftime('%Y-%m-%d')"/>
+        <field name="state">assigned</field>
+        <field name="notes">Primary workstation issued for the current engineering assignment.</field>
+    </record>
+    <record id="assignment_phone_active" model="assetwise.assignment">
+        <field name="asset_id" ref="asset_phone"/>
+        <field name="assigned_to_id" ref="base.user_admin"/>
+        <field name="assigned_by_id" ref="base.user_admin"/>
+        <field name="assignment_date" eval="(datetime.today() - timedelta(days=80)).strftime('%Y-%m-%d')"/>
+        <field name="expected_return_date" eval="(datetime.today() + timedelta(days=285)).strftime('%Y-%m-%d')"/>
+        <field name="state">assigned</field>
+        <field name="notes">Mobile device issued for customer visits and sales demonstrations.</field>
+    </record>
+    <record id="assignment_chair_returned" model="assetwise.assignment">
+        <field name="asset_id" ref="asset_chair"/>
+        <field name="assigned_to_id" ref="base.user_admin"/>
+        <field name="assigned_by_id" ref="base.user_admin"/>
+        <field name="assignment_date" eval="(datetime.today() - timedelta(days=260)).strftime('%Y-%m-%d')"/>
+        <field name="expected_return_date" eval="(datetime.today() - timedelta(days=80)).strftime('%Y-%m-%d')"/>
+        <field name="actual_return_date" eval="(datetime.today() - timedelta(days=75)).strftime('%Y-%m-%d')"/>
+        <field name="received_by_id" ref="base.user_admin"/>
+        <field name="return_condition">good</field>
+        <field name="return_notes">Returned after workspace reassignment; cleaned and ready for reuse.</field>
+        <field name="state">returned</field>
+    </record>
+    <record id="assignment_camera_returned" model="assetwise.assignment">
+        <field name="asset_id" ref="asset_camera"/>
+        <field name="assigned_to_id" ref="base.user_admin"/>
+        <field name="assigned_by_id" ref="base.user_admin"/>
+        <field name="assignment_date" eval="(datetime.today() - timedelta(days=190)).strftime('%Y-%m-%d')"/>
+        <field name="expected_return_date" eval="(datetime.today() - timedelta(days=175)).strftime('%Y-%m-%d')"/>
+        <field name="actual_return_date" eval="(datetime.today() - timedelta(days=172)).strftime('%Y-%m-%d')"/>
+        <field name="received_by_id" ref="base.user_admin"/>
+        <field name="return_condition">damaged</field>
+        <field name="return_notes">Lens mount was loose after an off-site event; corrective service completed.</field>
+        <field name="state">returned</field>
+    </record>
+
+    <!-- Maintenance history and active work -->
     <record id="maintenance_projector" model="assetwise.maintenance">
-        <field name="asset_id" ref="asset_projector"/><field name="maintenance_type">preventive</field><field name="description">Quarterly lens cleaning and lamp inspection.</field><field name="scheduled_date" eval="(datetime.date.today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d')"/>
+        <field name="asset_id" ref="asset_projector"/>
+        <field name="maintenance_type">preventive</field>
+        <field name="description">Clean the optical assembly, inspect the lamp, and verify HDMI inputs.</field>
+        <field name="scheduled_date" eval="(datetime.today() + timedelta(days=7)).strftime('%Y-%m-%d')"/>
+        <field name="assigned_technician_id" ref="base.user_admin"/>
+        <field name="maintenance_cost">850000</field>
+        <field name="state">scheduled</field>
+    </record>
+    <record id="maintenance_hvac" model="assetwise.maintenance">
+        <field name="asset_id" ref="asset_hvac"/>
+        <field name="maintenance_type">corrective</field>
+        <field name="description">Investigate unstable cooling and replace the condenser fan if required.</field>
+        <field name="scheduled_date" eval="(datetime.today() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+        <field name="assigned_technician_id" ref="base.user_admin"/>
+        <field name="maintenance_cost">2750000</field>
+        <field name="state">in_progress</field>
+        <field name="notes">Temporary cooling unit is operating while repairs are underway.</field>
+    </record>
+    <record id="maintenance_laptop_completed" model="assetwise.maintenance">
+        <field name="asset_id" ref="asset_laptop"/>
+        <field name="maintenance_type">preventive</field>
+        <field name="description">Battery health check, operating system updates, and internal cleaning.</field>
+        <field name="scheduled_date" eval="(datetime.today() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.today() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
+        <field name="completion_date" eval="(datetime.today() - timedelta(days=119)).strftime('%Y-%m-%d')"/>
+        <field name="assigned_technician_id" ref="base.user_admin"/>
+        <field name="maintenance_cost">450000</field>
+        <field name="state">completed</field>
+    </record>
+    <record id="maintenance_camera_completed" model="assetwise.maintenance">
+        <field name="asset_id" ref="asset_camera"/>
+        <field name="maintenance_type">corrective</field>
+        <field name="description">Repair and calibrate the lens mount following a damaged return.</field>
+        <field name="scheduled_date" eval="(datetime.today() - timedelta(days=171)).strftime('%Y-%m-%d')"/>
+        <field name="start_date" eval="(datetime.today() - timedelta(days=170)).strftime('%Y-%m-%d')"/>
+        <field name="completion_date" eval="(datetime.today() - timedelta(days=165)).strftime('%Y-%m-%d')"/>
+        <field name="assigned_technician_id" ref="base.user_admin"/>
+        <field name="maintenance_cost">1250000</field>
+        <field name="state">completed</field>
+        <field name="notes">Function and focus tests passed after repair.</field>
+    </record>
+    <record id="maintenance_nas_draft" model="assetwise.maintenance">
+        <field name="asset_id" ref="asset_nas"/>
+        <field name="maintenance_type">preventive</field>
+        <field name="description">Quarterly disk health review and backup restore test.</field>
+        <field name="scheduled_date" eval="(datetime.today() + timedelta(days=30)).strftime('%Y-%m-%d')"/>
+        <field name="assigned_technician_id" ref="base.user_admin"/>
+        <field name="maintenance_cost">0</field>
+        <field name="state">draft</field>
     </record>
 </odoo>

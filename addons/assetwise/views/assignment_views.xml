@@ -4,7 +4,7 @@
         <field name="name">assetwise.assignment.list</field>
         <field name="model">assetwise.assignment</field>
         <field name="arch" type="xml">
-            <list string="Asset Assignments" decoration-info="state == 'assigned'" decoration-success="state == 'returned'" decoration-muted="state == 'cancelled'">
+            <list string="Asset Assignments" default_order="assignment_date desc" decoration-info="state == 'assigned'" decoration-success="state == 'returned'" decoration-muted="state == 'cancelled'">
                 <field name="reference"/>
                 <field name="asset_id"/>
                 <field name="assigned_to_id" widget="many2one_avatar_user"/>
@@ -29,7 +29,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,assigned,returned,cancelled"/>
                 </header>
                 <sheet>
-                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <div class="oe_title">
+                        <div class="text-muted text-uppercase small fw-semibold">Asset custody</div>
+                        <h1><field name="reference"/></h1>
+                        <h3 class="text-muted"><field name="asset_id"/></h3>
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="state != 'draft'">
+                        Confirm the assignment when the asset has been physically handed to its custodian.
+                    </div>
                     <group>
                         <group string="Assignment">
                             <field name="asset_id" domain="[('status', '=', 'available')]" readonly="state != 'draft'"/>
@@ -69,6 +76,7 @@
                 <filter name="active" string="Active" domain="[('state', '=', 'assigned')]"/>
                 <filter name="overdue" string="Overdue" domain="[('state', '=', 'assigned'), ('expected_return_date', '&lt;', context_today())]"/>
                 <filter name="returned" string="Returned" domain="[('state', '=', 'returned')]"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
                 <group>
                     <filter name="asset" string="Asset" context="{'group_by': 'asset_id'}"/>
                     <filter name="assignee" string="Assigned To" context="{'group_by': 'assigned_to_id'}"/>

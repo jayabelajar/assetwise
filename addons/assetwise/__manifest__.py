@@ -23,6 +23,11 @@
         "views/assetwise_menus.xml",
     ],
     "demo": ["demo/assetwise_demo.xml"],
+    "assets": {
+        "web.assets_backend": [
+            "assetwise/static/src/scss/assetwise.scss",
+        ],
+    },
     "application": True,
     "installable": True,
 }

@@ -4,7 +4,7 @@
         <field name="name">assetwise.maintenance.list</field>
         <field name="model">assetwise.maintenance</field>
         <field name="arch" type="xml">
-            <list string="Asset Maintenance" decoration-warning="state in ('scheduled', 'in_progress')" decoration-success="state == 'completed'" decoration-muted="state == 'cancelled'">
+            <list string="Asset Maintenance" default_order="scheduled_date desc" decoration-warning="state in ('scheduled', 'in_progress')" decoration-success="state == 'completed'" decoration-danger="maintenance_type == 'corrective' and state not in ('completed', 'cancelled')" decoration-muted="state == 'cancelled'">
                 <field name="reference"/>
                 <field name="asset_id"/>
                 <field name="maintenance_type" widget="badge"/>
@@ -32,7 +32,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,in_progress,completed,cancelled"/>
                 </header>
                 <sheet>
-                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <div class="oe_title">
+                        <div class="text-muted text-uppercase small fw-semibold">Maintenance work order</div>
+                        <h1><field name="reference"/></h1>
+                        <h3 class="text-muted"><field name="asset_id"/></h3>
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="maintenance_type != 'corrective' or state in ('completed', 'cancelled')">
+                        <i class="fa fa-exclamation-circle me-1"/> Corrective work requires attention before this asset can return to service.
+                    </div>
                     <group>
                         <group string="Work Order">
                             <field name="asset_id" domain="[('status', '!=', 'disposed')]" readonly="state != 'draft'"/>
@@ -68,6 +75,8 @@
                 <filter name="upcoming" string="Upcoming" domain="[('state', '=', 'scheduled'), ('scheduled_date', '&gt;=', context_today())]"/>
                 <filter name="active" string="Active" domain="[('state', 'in', ('scheduled', 'in_progress'))]"/>
                 <filter name="completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+                <filter name="corrective" string="Corrective" domain="[('maintenance_type', '=', 'corrective')]"/>
+                <filter name="preventive" string="Preventive" domain="[('maintenance_type', '=', 'preventive')]"/>
                 <group>
                     <filter name="asset" string="Asset" context="{'group_by': 'asset_id'}"/>
                     <filter name="type" string="Type" context="{'group_by': 'maintenance_type'}"/>

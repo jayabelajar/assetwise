@@ -1,0 +1,116 @@
+.o_assetwise_dashboard {
+    background: #f4f7fb;
+
+    .o_kanban_record {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+}
+
+.o_assetwise_dashboard_shell {
+    min-height: calc(100vh - 140px);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background:
+        radial-gradient(circle at top right, rgba(113, 75, 103, 0.10), transparent 28rem),
+        #f8fafc;
+}
+
+.o_assetwise_dashboard_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid #e6eaf0;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.05);
+}
+
+.o_assetwise_company_logo img {
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: contain;
+}
+
+.o_assetwise_kpi,
+.o_assetwise_summary_card {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: 100%;
+    padding: 1rem;
+    border: 1px solid #e6eaf0;
+    border-radius: 0.9rem;
+    background: #fff;
+    color: inherit !important;
+    text-decoration: none !important;
+    box-shadow: 0 0.35rem 1rem rgba(15, 23, 42, 0.04);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: rgba(113, 75, 103, 0.35);
+        box-shadow: 0 0.75rem 1.5rem rgba(15, 23, 42, 0.09);
+    }
+
+    small {
+        display: block;
+        margin-bottom: 0.15rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    strong {
+        display: block;
+        color: #172033;
+        font-size: 1.55rem;
+        line-height: 1.2;
+    }
+}
+
+.o_assetwise_kpi_icon,
+.o_assetwise_summary_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.8rem;
+    font-size: 1.15rem;
+}
+
+.o_assetwise_kpi_primary .o_assetwise_kpi_icon { background: #eee8ed; color: #714b67; }
+.o_assetwise_kpi_success .o_assetwise_kpi_icon { background: #e8f7ef; color: #198754; }
+.o_assetwise_kpi_info .o_assetwise_kpi_icon { background: #e8f4fb; color: #0d6efd; }
+.o_assetwise_kpi_warning .o_assetwise_kpi_icon { background: #fff5db; color: #b7791f; }
+.o_assetwise_kpi_danger .o_assetwise_kpi_icon { background: #fce8ea; color: #dc3545; }
+
+.o_assetwise_summary_card strong {
+    font-size: 1.2rem;
+}
+
+.o_assetwise_asset_card {
+    min-height: 8.5rem;
+    padding: 0.35rem;
+}
+
+.o_assetwise_asset_image img {
+    width: 72px !important;
+    height: 72px !important;
+    border: 1px solid #e6eaf0;
+    border-radius: 0.75rem;
+    background: #f8fafc;
+    object-fit: cover;
+}
+
+@media (max-width: 767.98px) {
+    .o_assetwise_dashboard_shell { padding: 0.75rem; }
+    .o_assetwise_dashboard_header { align-items: flex-start; flex-direction: column; }
+}
